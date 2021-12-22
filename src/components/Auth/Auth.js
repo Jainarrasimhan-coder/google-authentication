@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import Icon from './icon';
-// import { signin, signup } from '../../actions/auth';
+import { signin, signup } from '../../actions/auth';
 import { AUTH } from '../../constants/actionTypes';
 import useStyles from './styles';
 import Input from './Input';
@@ -18,25 +18,26 @@ const SignUp = () => {
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
   const history = useNavigate();
-  const classes = useStyles();
 
+  const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const switchMode = () => {
-    setForm(initialState);
+    // setForm(initialState);
     setIsSignup((prevIsSignup) => !prevIsSignup);
-    setShowPassword(false);
+    handleShowPassword(false);
   };
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+console.log(form);
+    if (isSignup) {
+      dispatch(signup(form, history));
+    } else {
+      dispatch(signin(form, history));
 
-    // if (isSignup) {
-    //   dispatch(signup(form, history));
-    // } else {
-    //   dispatch(signin(form, history));
-    // }
+    }
   };
 
   const googleSuccess = async(res) => {
